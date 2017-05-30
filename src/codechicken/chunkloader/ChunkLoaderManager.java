@@ -375,7 +375,7 @@ public class ChunkLoaderManager {
 		public boolean canForceNewChunks(int required, int dim) {
 			return required + numLoadedChunks() < getPlayerChunkLimit(username)
 					&& required < ForgeChunkManager.ticketCountAvailableFor(username)
-							* ForgeChunkManager.getMaxChunkDepthFor("ChunkViewer");
+					* ForgeChunkManager.getMaxChunkDepthFor("ChunkViewer");
 		}
 
 		@Override
@@ -605,7 +605,7 @@ public class ChunkLoaderManager {
 
 	public static void initConfig(ConfigFile config) {
 		config.getTag("players").setPosition(0).useBraces()
-				.setComment("Per player chunk limiting. Values ignored if 0.:Simply add <username>=<value>");
+		.setComment("Per player chunk limiting. Values ignored if 0.:Simply add <username>=<value>");
 		config.getTag("players.DEFAULT").setComment("Forge gives everyone 12500 by default").getIntValue(5000);
 		config.getTag("players.OP").setComment("For server op's only.").getIntValue(5000);
 		config.getTag("allowoffline").setPosition(1).useBraces().setComment(
@@ -613,13 +613,13 @@ public class ChunkLoaderManager {
 		config.getTag("allowoffline.DEFAULT").getBooleanValue(true);
 		config.getTag("allowoffline.OP").getBooleanValue(true);
 		config.getTag("allowchunkviewer").setPosition(2).useBraces()
-				.setComment("Set to false to deny a player access to the chunk viewer");
+		.setComment("Set to false to deny a player access to the chunk viewer");
 		config.getTag("allowchunkviewer.DEFAULT").getBooleanValue(true);
 		config.getTag("allowchunkviewer.OP").getBooleanValue(true);
 		if (!FMLCommonHandler.instance().getModName().contains("mcpc"))
 			cleanupTicks = config.getTag("cleanuptime")
-					.setComment("The number of ticks to wait between attempting to unload orphaned chunks")
-					.getIntValue(1200);
+			.setComment("The number of ticks to wait between attempting to unload orphaned chunks")
+			.getIntValue(1200);
 		reloadDimensions = config.getTag("reload-dimensions")
 				.setComment("Set to false to disable the automatic reloading of mystcraft dimensions on server restart")
 				.getBooleanValue(true);
@@ -645,6 +645,11 @@ public class ChunkLoaderManager {
 	}
 
 	private static ChunkLoaderOrganiser getOrganiser(IChickenChunkLoader loader) {
+		// Added bugfix here because IChickenChunkLoad.getWorld() is needed to get the WorldServer object for load(),
+		// and this method has the last reference to the loader
+		if(!loaded){
+			ChunkLoaderManager.load(DimensionManager.getWorld(CommonUtils.getDimension(loader.getWorld())));
+		}
 		String owner = loader.getOwner();
 		return owner == null ? getModOrganiser(loader.getMod()) : getPlayerOrganiser(owner);
 	}
@@ -667,6 +672,9 @@ public class ChunkLoaderManager {
 	}
 
 	private static PlayerOrganiser getPlayerOrganiser(String username) {
+		if (playerOrganisers == null){		
+			return null;
+		}
 		PlayerOrganiser organiser = playerOrganisers.get(username);
 		if (organiser == null)
 			playerOrganisers.put(username, organiser = new PlayerOrganiser(username));
@@ -721,7 +729,7 @@ public class ChunkLoaderManager {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static void cleanChunks(WorldServer world) {
 		int dim = CommonUtils.getDimension(world);
@@ -730,7 +738,7 @@ public class ChunkLoaderManager {
 		HashSet<ChunkCoordIntPair> loadedChunks = new HashSet<ChunkCoordIntPair>();
 		for (EntityPlayer player : ServerUtils.getPlayersInDimension(dim)) {
 			int playerChunkX = (int) player.posX >> 4;
-			int playerChunkZ = (int) player.posZ >> 4;
+		int playerChunkZ = (int) player.posZ >> 4;
 
 			for (int cx = playerChunkX - viewdist; cx <= playerChunkX + viewdist; cx++)
 				for (int cz = playerChunkZ - viewdist; cz <= playerChunkZ + viewdist; cz++)
@@ -748,22 +756,22 @@ public class ChunkLoaderManager {
 
 			if (!loadedChunks.contains(coord) && !persistantChunks.containsKey(coord) && world.theChunkProviderServer.chunkExists(coord.chunkXPos, coord.chunkZPos)) {
 				try {
-				Method getOrCreateChunkWatcher = PlayerManager.class.getDeclaredMethod("getOrCreateChunkWatcher", null);
-				getOrCreateChunkWatcher.setAccessible(true);
-				Class<?> PI = Class.forName("net.minecraft.server.management.PlayerManager$PlayerInstance");
-				Constructor<?> CONSTRUCTOR = PI.getDeclaredConstructor(PlayerManager.class);
-				CONSTRUCTOR.setAccessible(true);
-				Object instance = CONSTRUCTOR.newInstance(manager);
-				
-				instance = getOrCreateChunkWatcher.invoke(coord.chunkXPos, coord.chunkZPos, false);
-				if (instance == null) {
-					world.theChunkProviderServer.unloadChunksIfNotNearSpawn(coord.chunkXPos, coord.chunkZPos);
-				}
-				else {
-					/*while (instance.playersWatchingChunk.size() > 0)
+					Method getOrCreateChunkWatcher = PlayerManager.class.getDeclaredMethod("getOrCreateChunkWatcher", null);
+					getOrCreateChunkWatcher.setAccessible(true);
+					Class<?> PI = Class.forName("net.minecraft.server.management.PlayerManager$PlayerInstance");
+					Constructor<?> CONSTRUCTOR = PI.getDeclaredConstructor(PlayerManager.class);
+					CONSTRUCTOR.setAccessible(true);
+					Object instance = CONSTRUCTOR.newInstance(manager);
+
+					instance = getOrCreateChunkWatcher.invoke(coord.chunkXPos, coord.chunkZPos, false);
+					if (instance == null) {
+						world.theChunkProviderServer.unloadChunksIfNotNearSpawn(coord.chunkXPos, coord.chunkZPos);
+					}
+					else {
+						/*while (instance.playersWatchingChunk.size() > 0)
 						((PlayerManager) instance).removePlayer((EntityPlayerMP) instance.playersWatchingChunk.get(0));*/
-				}
-			} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException | ClassNotFoundException | NoSuchMethodException | SecurityException n){}
+					}
+				} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException | ClassNotFoundException | NoSuchMethodException | SecurityException n){}
 			}
 		}
 
