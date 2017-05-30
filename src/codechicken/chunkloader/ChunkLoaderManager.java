@@ -1,6 +1,13 @@
 package codechicken.chunkloader;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,6 +17,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Stack;
+
+import org.apache.logging.log4j.LogManager;
 
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.LinkedListMultimap;
@@ -23,24 +32,21 @@ import codechicken.lib.vec.BlockCoord;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
-
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PlayerManager.PlayerInstance;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerManager;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.OrderedLoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.PlayerOrderedLoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
-import org.apache.logging.log4j.LogManager;
 
 public class ChunkLoaderManager
 {
@@ -234,9 +240,9 @@ public class ChunkLoaderManager
             }
             HashSet<ChunkCoordIntPair> oldChunks = new HashSet<ChunkCoordIntPair>(loaderChunks);
             HashSet<ChunkCoordIntPair> newChunks = new HashSet<ChunkCoordIntPair>();
-            for (ChunkCoordIntPair chunk : loader.getChunks())
+            for (Object chunk : loader.getChunks())
                 if (!oldChunks.remove(chunk))
-                    newChunks.add(chunk);
+                    newChunks.add((ChunkCoordIntPair) chunk);
 
             int dim = CommonUtils.getDimension(loader.getWorld());
             if (!oldChunks.isEmpty())
@@ -715,6 +721,17 @@ public class ChunkLoaderManager
     public static void cleanChunks(WorldServer world) {
         int dim = CommonUtils.getDimension(world);
         int viewdist = ServerUtils.mc().getConfigurationManager().getViewDistance();
+        
+        PlayerManager pManager = new PlayerManager(world);
+        Class<?> innerClazz = Class.forName("net.minecraft.server.management.PlayerManager$PlayerInstance");
+        // constructor of inner class as first argument need instance of
+        // Outer class, so we need to select such constructor
+        Constructor<?> constructor = innerClazz.getDeclaredConstructor(PlayerManager.class);
+        //we need to make constructor accessible 
+        constructor.setAccessible(true);
+        //and pass instance of Outer class as first argument
+        Object o = constructor.newInstance(pManager);
+        System.out.println("we created object of class: "+o.getClass().getName());  
 
         HashSet<ChunkCoordIntPair> loadedChunks = new HashSet<ChunkCoordIntPair>();
         for (EntityPlayer player : ServerUtils.getPlayersInDimension(dim)) {
@@ -732,7 +749,7 @@ public class ChunkLoaderManager
         for (Chunk chunk : (List<Chunk>) world.theChunkProviderServer.loadedChunks) {
             ChunkCoordIntPair coord = chunk.getChunkCoordIntPair();
             if (!loadedChunks.contains(coord) && !persistantChunks.containsKey(coord) && world.theChunkProviderServer.chunkExists(coord.chunkXPos, coord.chunkZPos)) {
-                PlayerInstance instance = manager.getOrCreateChunkWatcher(coord.chunkXPos, coord.chunkZPos, false);
+            	net.minecraft.server.management.PlayerManager.PlayerInstance instance = manager.getOrCreateChunkWatcher(coord.chunkXPos, coord.chunkZPos, false);
                 if (instance == null) {
                     world.theChunkProviderServer.unloadChunksIfNotNearSpawn(coord.chunkXPos, coord.chunkZPos);
                 } else {

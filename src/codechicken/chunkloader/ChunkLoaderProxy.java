@@ -1,17 +1,19 @@
 package codechicken.chunkloader;
 
+import static codechicken.chunkloader.ChickenChunks.blockChunkLoader;
+import static codechicken.chunkloader.ChickenChunks.config;
+import static codechicken.chunkloader.ChickenChunks.instance;
+
+import codechicken.lib.packet.PacketCustom;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import codechicken.lib.packet.PacketCustom;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-
-import static codechicken.chunkloader.ChickenChunks.*;
 
 public class ChunkLoaderProxy
 {
@@ -21,8 +23,8 @@ public class ChunkLoaderProxy
         blockChunkLoader.setBlockName("chickenChunkLoader").setCreativeTab(CreativeTabs.tabMisc);
         GameRegistry.registerBlock(blockChunkLoader, ItemChunkLoader.class, "chickenChunkLoader");
         
-        GameRegistry.registerTileEntity(TileChunkLoader.class, "ChickenChunkLoader");
-        GameRegistry.registerTileEntity(TileSpotLoader.class, "ChickenSpotLoader");
+       // GameRegistry.registerTileEntity(TileChunkLoader.class, "ChickenChunkLoader");
+       // GameRegistry.registerTileEntity(TileSpotLoader.class, "ChickenSpotLoader");
         
         PacketCustom.assignHandler(ChunkLoaderSPH.channel, new ChunkLoaderSPH());
         ChunkLoaderManager.initConfig(config);

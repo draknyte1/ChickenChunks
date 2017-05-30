@@ -1,13 +1,11 @@
 package codechicken.chunkloader;
 
-import codechicken.core.ClientUtils;
-import net.minecraft.client.Minecraft;
-import codechicken.core.CCUpdateChecker;
-import codechicken.lib.packet.PacketCustom;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
+import static codechicken.chunkloader.ChickenChunks.config;
 
-import static codechicken.chunkloader.ChickenChunks.*;
+import codechicken.core.CCUpdateChecker;
+import codechicken.core.ClientUtils;
+import codechicken.lib.packet.PacketCustom;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ChunkLoaderClientProxy  extends ChunkLoaderProxy
 {
@@ -22,14 +20,14 @@ public class ChunkLoaderClientProxy  extends ChunkLoaderProxy
 
         PacketCustom.assignHandler(ChunkLoaderCPH.channel, new ChunkLoaderCPH());
         
-        ClientRegistry.bindTileEntitySpecialRenderer(TileChunkLoader.class, new TileChunkLoaderRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileSpotLoader.class, new TileChunkLoaderRenderer());
+        //ClientRegistry.bindTileEntitySpecialRenderer(TileChunkLoader.class, new TileChunkLoaderRenderer());
+        //ClientRegistry.bindTileEntitySpecialRenderer(TileSpotLoader.class, new TileChunkLoaderRenderer());
         RenderingRegistry.registerBlockHandler(new ChunkLoaderSBRH());
     }
     
     @Override
     public void openGui(TileChunkLoader tile)
     {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiChunkLoader(tile));
+        //Minecraft.getMinecraft().displayGuiScreen(new GuiChunkLoader(tile));
     }
 }

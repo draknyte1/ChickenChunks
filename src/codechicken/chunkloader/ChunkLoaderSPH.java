@@ -1,11 +1,11 @@
 package codechicken.chunkloader;
 
+import codechicken.lib.packet.PacketCustom;
+import codechicken.lib.packet.PacketCustom.IServerPacketHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.INetHandlerPlayServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import codechicken.lib.packet.PacketCustom;
-import codechicken.lib.packet.PacketCustom.IServerPacketHandler;
 
 public class ChunkLoaderSPH implements IServerPacketHandler
 {
@@ -31,7 +31,7 @@ public class ChunkLoaderSPH implements IServerPacketHandler
         if(tile instanceof TileChunkLoader)
         {        
             TileChunkLoader ctile = (TileChunkLoader)tile;
-            ctile.setShapeAndRadius(ChunkLoaderShape.values()[packet.readUByte()], packet.readUByte());
+           // ctile.setShapeAndRadius(ChunkLoaderShape.values()[packet.readUByte()], packet.readUByte());
         }
     }
 }

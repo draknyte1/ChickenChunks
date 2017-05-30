@@ -3,11 +3,7 @@ package codechicken.chunkloader;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Collection;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+
 import org.lwjgl.opengl.GL11;
 
 import codechicken.core.ClientUtils;
@@ -16,6 +12,11 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Matrix4;
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Vector3;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.ChunkCoordIntPair;
 
 public class TileChunkLoaderRenderer extends TileEntitySpecialRenderer
 {
@@ -54,11 +55,6 @@ public class TileChunkLoaderRenderer extends TileEntitySpecialRenderer
             rot /= Math.pow(ctile.radius, 0.2);
             height = 0.9;
             size = 0.08;
-        }
-        else if(chunkLoader instanceof TileSpotLoader)
-        {
-            height = 0.5;
-            size = 0.05;
         }
         else
             return;

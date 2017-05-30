@@ -1,14 +1,14 @@
 package codechicken.chunkloader;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.play.INetHandlerPlayClient;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.ChunkCoordIntPair;
 import codechicken.core.CommonUtils;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IClientPacketHandler;
 import codechicken.lib.vec.BlockCoord;
 import codechicken.lib.vec.Vector3;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.play.INetHandlerPlayClient;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.ChunkCoordIntPair;
 
 public class ChunkLoaderCPH implements IClientPacketHandler
 {
@@ -51,16 +51,16 @@ public class ChunkLoaderCPH implements IClientPacketHandler
                 PlayerChunkViewer.instance().handleNewTicket(packet, mc.theWorld);
                 break;
             case 10:
-                TileChunkLoader.handleDescriptionPacket(packet, mc.theWorld);
+                //TileChunkLoader.handleDescriptionPacket(packet, mc.theWorld);
                 break;
             case 11:
-                TileSpotLoader.handleDescriptionPacket(packet, mc.theWorld);
+                //TileSpotLoader.handleDescriptionPacket(packet, mc.theWorld);
                 break;
             case 12:
                 BlockCoord pos = packet.readCoord();
                 TileEntity tile = mc.theWorld.getTileEntity(pos.x, pos.y, pos.z);
                 if (tile instanceof TileChunkLoader)
-                    mc.displayGuiScreen(new GuiChunkLoader((TileChunkLoader) tile));
+                   //mc.displayGuiScreen(new GuiChunkLoader((TileChunkLoader) tile));
                 break;
 
         }
@@ -71,11 +71,4 @@ public class ChunkLoaderCPH implements IClientPacketHandler
         packet.sendToServer();
     }
 
-    public static void sendShapeChange(TileChunkLoader tile, ChunkLoaderShape shape, int radius) {
-        PacketCustom packet = new PacketCustom(channel, 2);
-        packet.writeCoord(tile.xCoord, tile.yCoord, tile.zCoord);
-        packet.writeByte(shape.ordinal());
-        packet.writeByte(radius);
-        packet.sendToServer();
-    }
 }
