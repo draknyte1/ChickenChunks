@@ -1,4 +1,4 @@
-package codechicken.chunkloader;
+package alkalus;
 
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IServerPacketHandler;

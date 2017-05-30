@@ -1,7 +1,7 @@
-package codechicken.chunkloader;
+package alkalus;
 
-import codechicken.chunkloader.PlayerChunkViewerManager.DimensionChange;
-import codechicken.chunkloader.PlayerChunkViewerManager.TicketChange;
+import alkalus.PlayerChunkViewerManager.DimensionChange;
+import alkalus.PlayerChunkViewerManager.TicketChange;
 import codechicken.core.ServerUtils;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

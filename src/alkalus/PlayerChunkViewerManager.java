@@ -1,4 +1,4 @@
-package codechicken.chunkloader;
+package alkalus;
 
 import java.util.ArrayList;
 import java.util.HashMap;

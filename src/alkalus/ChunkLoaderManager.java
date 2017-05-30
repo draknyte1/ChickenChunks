@@ -1,4 +1,4 @@
-package codechicken.chunkloader;
+package alkalus;
 
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -752,7 +752,7 @@ public class ChunkLoaderManager {
 		for (Chunk chunk : (List<Chunk>) world.theChunkProviderServer.loadedChunks) {
 			ChunkCoordIntPair coord = chunk.getChunkCoordIntPair();
 
-			System.out.println("Killing Myself.");
+			//System.out.println("Killing Myself.");
 
 			if (!loadedChunks.contains(coord) && !persistantChunks.containsKey(coord) && world.theChunkProviderServer.chunkExists(coord.chunkXPos, coord.chunkZPos)) {
 				try {

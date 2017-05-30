@@ -1,4 +1,4 @@
-package codechicken.chunkloader;
+package alkalus;
 
 import java.awt.Color;
 import java.awt.Component;

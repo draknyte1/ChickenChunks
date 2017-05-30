@@ -1,4 +1,4 @@
-package codechicken.chunkloader;
+package alkalus;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;

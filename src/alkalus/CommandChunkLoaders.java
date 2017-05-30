@@ -1,5 +1,6 @@
-package codechicken.chunkloader;
+package alkalus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import codechicken.core.commands.PlayerCommand;
@@ -52,8 +53,12 @@ public class CommandChunkLoaders extends PlayerCommand {
 	}
 
 	public List getCommandAliases() {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> alias = new ArrayList<String>();
+		alias.add("CV");
+		alias.add("CL");
+		alias.add("cv");
+		alias.add("cl");
+		return alias;
 	}
 
 	public void processCommand(ICommandSender sender, String[] randomArray) {
@@ -61,12 +66,11 @@ public class CommandChunkLoaders extends PlayerCommand {
 	handleCommand(null, (EntityPlayerMP) sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName()), randomArray);
 	}
 
-	public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
-		// TODO Auto-generated method stub
+	public boolean canCommandSenderUseCommand(ICommandSender sender) {
 		return true;
 	}
 
-	public List addTabCompletionOptions(ICommandSender p_71516_1_, String[] p_71516_2_) {
+	public List<?> addTabCompletionOptions(ICommandSender p_71516_1_, String[] p_71516_2_) {
 		// TODO Auto-generated method stub
 		return null;
 	}
