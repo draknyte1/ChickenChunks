@@ -15,7 +15,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 @Mod(modid = "ChunkViewer", dependencies = "required-after:CodeChickenCore@[" + CodeChickenCorePlugin.version + ",)", acceptedMinecraftVersions = CodeChickenCorePlugin.mcVersion, acceptableRemoteVersions = "*")
 public class ChunkViewer
 {
-    @SidedProxy(clientSide = "codechicken.chunkloader.ChunkLoaderClientProxy", serverSide = "codechicken.chunkloader.ChunkLoaderProxy")
+    @SidedProxy(clientSide = "alkalus.ChunkLoaderClientProxy", serverSide = "alkalus.ChunkLoaderProxy")
     public static ChunkLoaderProxy proxy;
 
     public static ConfigFile config;
