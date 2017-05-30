@@ -20,15 +20,19 @@ public class CommandChunkLoaders extends PlayerCommand {
 
 	@Override
 	public void handleCommand(WorldServer world, EntityPlayerMP player, String[] args) {
+		System.out.println("Called ChunkLoaders Command.");
 		WCommandSender wrapped = new WCommandSender(player);
 		if (PlayerChunkViewerManager.instance().isViewerOpen(player.getCommandSenderName())) {
 			wrapped.chatT("command.chunkloaders.alreadyopen");
+			System.out.println("Called ChunkLoaders Command. Failed, Already open.");
 			return;
 		}
 		if (!ChunkLoaderManager.allowChunkViewer(player.getCommandSenderName())) {
+			System.out.println("Called ChunkLoaders Command. Failed, Denied.");
 			wrapped.chatT("command.chunkloaders.denied");
 			return;
 		}
+		System.out.println("ChunkLoaders Command, Processing.");
 		PlayerChunkViewerManager.instance().addViewers.add(player.getCommandSenderName());
 	}
 
@@ -52,9 +56,9 @@ public class CommandChunkLoaders extends PlayerCommand {
 		return null;
 	}
 
-	public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
-		// TODO Auto-generated method stub
-
+	public void processCommand(ICommandSender sender, String[] randomArray) {
+	System.out.println("Called ChunkLoaders Command. [1]");
+	handleCommand(null, (EntityPlayerMP) sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName()), randomArray);
 	}
 
 	public boolean canCommandSenderUseCommand(ICommandSender p_71519_1_) {
