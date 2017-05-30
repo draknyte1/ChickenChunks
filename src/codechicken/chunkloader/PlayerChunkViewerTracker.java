@@ -1,6 +1,6 @@
 package codechicken.chunkloader;
 
-import static codechicken.chunkloader.ChunkLoaderSPH.channel;
+import static codechicken.chunkloader.ChunkViewer.channel;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -31,14 +31,22 @@ public class PlayerChunkViewerTracker {
 		owner = player;
 		this.manager = manager;
 
-		PacketCustom packet = new PacketCustom(ChunkLoaderSPH.channel, 1);
+		try {
+			System.out.println("Creating a PacketCustom in "+this.getClass().getName()+"."+"PlayerChunkViewerTracker");
+		PacketCustom packet = new PacketCustom(ChunkViewer.channel, 1);
 		packet.sendToPlayer(player);
+		}
+		catch (NullPointerException n){
+		
+		}
 
 		for (WorldServer world : DimensionManager.getWorlds())
 			loadDimension(world);
 	}
 
 	public void writeTicketToPacket(PacketCustom packet, Ticket ticket, Collection<ChunkCoordIntPair> chunkSet) {
+
+		System.out.println("Editing a PacketCustom in "+this.getClass().getName()+"."+"writeTicketToPacket");
 		packet.writeInt(manager.ticketIDs.get(ticket));
 		packet.writeString(ticket.getModId());
 		String player = ticket.getPlayerName();
@@ -60,7 +68,10 @@ public class PlayerChunkViewerTracker {
 
 	@SuppressWarnings("unchecked")
 	public void loadDimension(WorldServer world) {
+		try {
+			System.out.println("Creating a PacketCustom in "+this.getClass().getName()+"."+"loadDimension");
 		PacketCustom packet = new PacketCustom(channel, 2).compress();
+		
 		int dim = CommonUtils.getDimension(world);
 		packet.writeInt(dim);
 
@@ -78,16 +89,28 @@ public class PlayerChunkViewerTracker {
 			writeTicketToPacket(packet, entry.getKey(), entry.getValue());
 
 		packet.sendToPlayer(owner);
+		}
+		catch (NullPointerException n){
+		
+		}
 	}
 
 	public void unloadDimension(int dim) {
+		try {
+			System.out.println("Creating a PacketCustom in "+this.getClass().getName()+"."+"unloadDimension");
 		PacketCustom packet = new PacketCustom(channel, 3);
 		packet.writeInt(dim);
 
 		packet.sendToPlayer(owner);
+		}
+		catch (NullPointerException n){
+		
+		}
 	}
 
 	public void sendChunkChange(ChunkChange change) {
+		try {
+			System.out.println("Creating a PacketCustom in "+this.getClass().getName()+"."+"sendChunkChange");
 		PacketCustom packet = new PacketCustom(channel, 4);
 		packet.writeInt(change.dimension);
 		packet.writeInt(change.chunk.chunkXPos);
@@ -95,6 +118,9 @@ public class PlayerChunkViewerTracker {
 		packet.writeBoolean(change.add);
 
 		packet.sendToPlayer(owner);
+		} catch (NullPointerException n){
+			
+		}
 	}
 
 	public void sendTicketChange(TicketChange change) {
@@ -102,6 +128,8 @@ public class PlayerChunkViewerTracker {
 		if (!knownTickets.contains(ticketID))
 			addTicket(change.dimension, change.ticket);
 
+		try{
+			System.out.println("Creating a PacketCustom in "+this.getClass().getName()+"."+"sendTicketChange");
 		PacketCustom packet = new PacketCustom(channel, 5);
 		packet.writeInt(change.dimension);
 		packet.writeInt(ticketID);
@@ -110,9 +138,15 @@ public class PlayerChunkViewerTracker {
 		packet.writeBoolean(change.force);
 
 		packet.sendToPlayer(owner);
+		}
+		catch (NullPointerException n){
+		
+		}
 	}
 
 	public void updatePlayer(EntityPlayer player) {
+		try {
+			System.out.println("Creating a PacketCustom in "+this.getClass().getName()+"."+"updatePlayer");
 		PacketCustom packet = new PacketCustom(channel, 6);
 		packet.writeString(player.getCommandSenderName());
 		packet.writeInt(player.dimension);
@@ -122,20 +156,37 @@ public class PlayerChunkViewerTracker {
 		packet.writeFloat((float) pos.z);
 
 		packet.sendToPlayer(owner);
+		}
+		catch (NullPointerException n){
+		
+		}
 	}
 
 	public void removePlayer(String username) {
+		try {
+			System.out.println("Creating a PacketCustom in "+this.getClass().getName()+"."+"removePlayer");
 		PacketCustom packet = new PacketCustom(channel, 7);
 		packet.writeString(username);
 
 		packet.sendToPlayer(owner);
+		}
+		catch (NullPointerException n){
+		
+		}
 	}
 
 	public void addTicket(int dimension, Ticket ticket) {
-		PacketCustom packet = new PacketCustom(channel, 8);
-		packet.writeInt(dimension);
-		writeTicketToPacket(packet, ticket, ticket.getChunkList());
+		try {
+			System.out.println("Creating a PacketCustom in "+this.getClass().getName()+"."+"addTicket");
+			PacketCustom packet = new PacketCustom(channel, 8);
+			packet.writeInt(dimension);
+			writeTicketToPacket(packet, ticket, ticket.getChunkList());
 
-		packet.sendToPlayer(owner);
+			packet.sendToPlayer(owner);
+		}
+		catch (NullPointerException n){
+
+		}
 	}
+
 }

@@ -6,7 +6,7 @@ public class ChunkLoaderClientProxy extends ChunkLoaderProxy {
 	@Override
 	public void init() {
 		super.init();
-		PacketCustom.assignHandler(ChunkLoaderCPH.channel, new ChunkLoaderCPH());
+		PacketCustom.assignHandler(ChunkViewer.channel, new ChunkLoaderCPH());
 	}
 
 }

@@ -23,6 +23,8 @@ public class ChunkViewer
     @Instance(value = "ChunkViewer")
     public static ChunkViewer instance;
 
+	public static String channel = "ChunkViewer";
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         config = new ConfigFile(new File(event.getModConfigurationDirectory(), "ChunkViewer.cfg"))

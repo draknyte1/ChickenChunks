@@ -8,7 +8,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class ChunkLoaderSPH implements IServerPacketHandler {
-	public static String channel = "ChickenChunks";
 
 	@Override
 	public void handlePacket(PacketCustom packet, EntityPlayerMP sender, INetHandlerPlayServer handler) {

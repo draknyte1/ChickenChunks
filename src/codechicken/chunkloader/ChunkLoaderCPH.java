@@ -11,8 +11,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkCoordIntPair;
 
 public class ChunkLoaderCPH implements IClientPacketHandler {
-	public static String channel = "ChickenChunks";
-
 	@Override
 	public void handlePacket(PacketCustom packet, Minecraft mc, INetHandlerPlayClient handler) {
 		switch (packet.getType()) {
@@ -59,8 +57,13 @@ public class ChunkLoaderCPH implements IClientPacketHandler {
 	}
 
 	public static void sendGuiClosing() {
-		PacketCustom packet = new PacketCustom(channel, 1);
+		try{
+			System.out.println("Creating a PacketCustom in "+"ChunkLoaderCPH"+"."+"sendGuiClosing");
+		PacketCustom packet = new PacketCustom(ChunkViewer.channel, 1);
 		packet.sendToServer();
+		} catch (NullPointerException n){
+			
+		}
 	}
 
 }
