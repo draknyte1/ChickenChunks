@@ -608,10 +608,6 @@ public class ChunkLoaderManager {
 		.setComment("Per player chunk limiting. Values ignored if 0.:Simply add <username>=<value>");
 		config.getTag("players.DEFAULT").setComment("Forge gives everyone 12500 by default").getIntValue(5000);
 		config.getTag("players.OP").setComment("For server op's only.").getIntValue(5000);
-		config.getTag("allowoffline").setPosition(1).useBraces().setComment(
-				"If set to false, players will have to be logged in for their chunkloaders to work.:Simply add <username>=<true|false>");
-		config.getTag("allowoffline.DEFAULT").getBooleanValue(true);
-		config.getTag("allowoffline.OP").getBooleanValue(true);
 		config.getTag("allowchunkviewer").setPosition(2).useBraces()
 		.setComment("Set to false to deny a player access to the chunk viewer");
 		config.getTag("allowchunkviewer.DEFAULT").getBooleanValue(true);
@@ -619,20 +615,10 @@ public class ChunkLoaderManager {
 		if (!FMLCommonHandler.instance().getModName().contains("mcpc"))
 			cleanupTicks = config.getTag("cleanuptime")
 			.setComment("The number of ticks to wait between attempting to unload orphaned chunks")
-			.getIntValue(1200);
+			.getIntValue(600);
 		reloadDimensions = config.getTag("reload-dimensions")
 				.setComment("Set to false to disable the automatic reloading of mystcraft dimensions on server restart")
 				.getBooleanValue(true);
-		opInteract = config.getTag("op-interact")
-				.setComment(
-						"Enabling this lets OPs alter other player's chunkloaders. WARNING: If you change a chunkloader, you have no idea what may break/explode by not being chunkloaded.")
-				.getBooleanValue(false);
-		maxChunks = config.getTag("maxchunks").setComment("The maximum number of chunks per chunkloader")
-				.getIntValue(400);
-		awayTimeout = config.getTag("awayTimeout")
-				.setComment(
-						"The number of minutes since last login within which chunks from a player will remain active, 0 for infinite.")
-				.getIntValue(0);
 	}
 
 	public static void addChunkLoader(IChickenChunkLoader loader) {

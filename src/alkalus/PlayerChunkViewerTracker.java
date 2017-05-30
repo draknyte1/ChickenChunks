@@ -146,7 +146,7 @@ public class PlayerChunkViewerTracker {
 
 	public void updatePlayer(EntityPlayer player) {
 		try {
-			System.out.println("Creating a PacketCustom in "+this.getClass().getName()+"."+"updatePlayer");
+			//System.out.println("Creating a PacketCustom in "+this.getClass().getName()+"."+"updatePlayer");
 			PacketCustom packet = new PacketCustom(channel, 6);
 			packet.writeString(player.getCommandSenderName());
 			packet.writeInt(player.dimension);
